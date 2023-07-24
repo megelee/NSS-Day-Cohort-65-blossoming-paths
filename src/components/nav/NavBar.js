@@ -7,13 +7,13 @@ export const NavBar = () => {
     return (
         <ul className="navbar">
             <li className="navbar__item active">
-                <Link className="navbar__link" to="/tickets">Tickets</Link>
+                <Link className="navbar__link" to="/tickets">Profile</Link>
             </li>
             {
                 localStorage.getItem("blossom_user")
                     ? <li className="navbar__item navbar__logout">
                         <Link className="navbar__link" to="" onClick={() => {
-                            localStorage.removeItem("honey_user")
+                            localStorage.removeItem("blossom_user")
                             navigate("/", {replace: true})
                         }}>Logout</Link>
                     </li>
