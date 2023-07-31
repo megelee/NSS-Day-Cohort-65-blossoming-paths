@@ -1,5 +1,6 @@
 /* Import the google web fonts you want to use */
 @import url("https://fonts.googleapis.com/css?family=Comfortaa|Patua+One");
+@import url('https://fonts.googleapis.com/css2?family=Caveat&family=Kalam:wght@300&display=swap');
 
 /*Typography
 --------------------------------------------------------------*/
@@ -19,7 +20,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Patua One", serif;
+  font-family: 'Kalam', cursive;
   letter-spacing: 2px;
 }
 

@@ -1,15 +1,39 @@
+/* NavBar.css */
 .navbar {
     display: flex;
-    flex-wrap: nowrap;
-    justify-content: left;
+    justify-content: flex-end;
+    list-style: none;
+    margin-left: -18em;
+    background-color: transparent;
+    background-color: rgb(241, 196, 203);
+    width: 120%;
+    /* Add a box shadow to create a slight shadow effect */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .navbar__item {
-    flex-basis: 20%;
-    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    flex-grow: 1;
 }
 
-.navbar__logout {
-    margin-left: auto;
+.navbar__link {
+    color: #333;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    display: block;
+    text-align: center;
+    /* Add a transition to create a smooth color change on hover */
+    transition: background-color 0.2s ease;
 }
 
+.navbar__link:hover {
+    background-color: #e9ecef;
+    /* Add a slight scale effect on hover to create an interactive feel */
+    transform: scale(1.05);
+    /* Add a box shadow on hover for a lifted effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+  

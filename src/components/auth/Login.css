@@ -1,5 +1,24 @@
-.h1, h1 {
-    font-size: 2.5rem;
+body {
+    margin: 0; /* Remove margin to fill the entire page */
+    padding: 0; /* Remove padding to fill the entire page */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: lavenderblush;
+}
+
+.background-image-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 85%;
+    height: 100%;
+    background-image: url('/Users/meganlee/workspace/blossoming-paths/src/images/homeImage.png');
+    background-position: right;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1; /* Ensure it stays behind other elements */
 }
 
 fieldset {
@@ -9,54 +28,67 @@ fieldset {
     border: 0;
 }
 
+.container--login{
+    margin-left:25em;
+}
+
 .form--login {
     display: inline-block;
-    margin: 0 auto;
+    margin-top: 15em;
+    margin-left: 48em;
     text-align: left;
+    z-index: 1;
+    width: 30rem; /* Set the same width for both login and register containers */
+    background-color: hsla(286, 60%, 72%, 0.199);
+    background-blend-mode: overlay;
+    background-repeat: no-repeat;
+    min-height: 12rem; /* Set the same height for both login and register containers */
+    padding: 2rem; /* Add padding to create spacing around the content */
 }
-
 .form--login > fieldset > input[type="email"] {
-    width: 25em;
-}
-
-.label--login {
-    width: 8rem;
-    display: inline-block;
+    width: 100%; /* Set the input width to 100% to fill the container */
 }
 
 .form-control {
     display: block;
-    width: 94%;
+    width: 80%; /* Set the input width to 100% to fill the container */
     height: calc(1.5em + .75rem + 2px);
     padding: .375rem .75rem;
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #495057;
+    color: #525749;
     background-color: #fff;
     background-clip: padding-box;
     border: 1px solid #ced4da;
     border-radius: .25rem;
-    -webkit-transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    -webkit-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
-.container--login {
-    text-align: center;
+.title-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    margin-bottom: 50px; /* Reduce the margin for title separation */
 }
 
-.form--login {
-    background-position-x: right;
-    z-index: 1;
-    min-height: 25rem;
-    min-width: 45rem;
-    background-color: hsla(0,0%,100%,0.40);
-    background-blend-mode: overlay;
-    background-repeat: no-repeat;
+.title-label {
+    margin-top: 3em;
+    margin-left: 0em;
+    font-size: 60px;
+}
+
+.link--login {
+    margin-top: 1em;
+    margin-left: 60em;
+}
+.link--register{
+    margin-left: 63em;
 }
 
 .button--close {
     position: relative;
     bottom: -2rem;
 }
-
