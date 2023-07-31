@@ -7,10 +7,12 @@ import "./Forums.css";
 export const Forums = () => {
   const [posts, setPosts] = useState([]);
   const [topics, setTopics] = useState([]);
+  const [topicFilter, setTopicFilter] = useState("All")
   const [users, setUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [showNewPostModal, setShowNewPostModal] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
+  const [selectedTopic, setSelectedTopic] = useState(""); // New state to store the selected topic
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -117,32 +119,45 @@ export const Forums = () => {
     setShowNewPostModal(true);
     setEditingPost(null);
   };
+  const handleTopicFilterChange = (e) => {
+    setTopicFilter(e.target.value);
+  };
 
+  const filteredPosts = topicFilter === "All" ? posts : posts.filter((post) => post.topic === topicFilter);
+
+ 
   return (
     <div className="forums-container">
       <h1>Forums</h1>
       {currentUser ? (
         <>
+          <div>
+            <label htmlFor="topicFilter">Select a Topic:</label>
+            <select id="topicFilter" value={topicFilter} onChange={handleTopicFilterChange}>
+              <option value="All">All Topics</option>
+              {topics.map((topic) => (
+                <option key={topic.id} value={topic.subject}>
+                  {topic.subject}
+                </option>
+              ))}
+            </select>
+          </div>
           <button className="post-button" onClick={handleNewPostClick}>
             New Post
           </button>
-          {posts.length > 0 ? (
+          {filteredPosts.length > 0 ? (
             <>
               <h2>Existing Posts</h2>
               <ul className="existing-posts">
-                {posts.map((post) => (
+                {filteredPosts.map((post) => (
                   <li key={post.id} className="post-item">
                     <h3>{post.topic}</h3>
                     <p>Author: {post.author}</p>
                     <p>{post.content}</p>
                     {currentUser.id === post.userId && (
                       <div>
-                        <button onClick={() => handleEditPost(post.id)}>
-                          Edit
-                        </button>
-                        <button onClick={() => handleDeletePost(post.id)}>
-                          Delete
-                        </button>
+                        <button onClick={() => handleEditPost(post.id)}>Edit</button>
+                        <button onClick={() => handleDeletePost(post.id)}>Delete</button>
                       </div>
                     )}
                   </li>
@@ -161,9 +176,9 @@ export const Forums = () => {
               }}
               topics={topics}
               editingPost={editingPost}
-              getAuthorName={getAuthorName} // Pass the getAuthorName function to the NewPostForm component
-              users={users} // Pass the users array to the NewPostForm component
-              currentUser={currentUser} // Pass the currentUser object to the NewPostForm component
+              getAuthorName={getAuthorName}
+              users={users}
+              currentUser={currentUser}
             />
           )}
           {editingPost && (
