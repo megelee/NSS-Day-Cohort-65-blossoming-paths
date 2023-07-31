@@ -1,26 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { NewPostForm } from "../forums/NewPostForm.js";
 import { EditForum } from "../forums/EditForum.js";
+import { CommentForm } from "../forums/CommentForm.js";
 import { useNavigate } from "react-router-dom";
 import "./Forums.css";
 
 export const Forums = () => {
   const [posts, setPosts] = useState([]);
   const [topics, setTopics] = useState([]);
-  const [topicFilter, setTopicFilter] = useState("All")
+  const [topicFilter, setTopicFilter] = useState("All");
   const [users, setUsers] = useState([]);
+  const [comments, setComments] = useState([]); // New state to store comments
   const [currentUser, setCurrentUser] = useState(null);
   const [showNewPostModal, setShowNewPostModal] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
-  const [selectedTopic, setSelectedTopic] = useState(""); // New state to store the selected topic
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch the current user from local storage (you can replace this with your authentication logic)
+    // Fetch the current user from local storage
     const storedUser = JSON.parse(localStorage.getItem("blossom_user"));
     setCurrentUser(storedUser);
 
-    // Fetch the posts from your API (you can replace this with your API fetch logic)
+    // Fetch the posts from your API
     fetch("http://localhost:8088/post")
       .then((response) => response.json())
       .then((data) => {
@@ -28,7 +29,7 @@ export const Forums = () => {
       })
       .catch((error) => console.error("Error fetching posts:", error));
 
-    // Fetch the topics from your API (you can replace this with your API fetch logic)
+    // Fetch the topics from your API
     fetch("http://localhost:8088/topics")
       .then((response) => response.json())
       .then((data) => {
@@ -36,13 +37,21 @@ export const Forums = () => {
       })
       .catch((error) => console.error("Error fetching topics:", error));
 
-    // Fetch the users from your API (you can replace this with your API fetch logic)
+    // Fetch the users from your API
     fetch("http://localhost:8088/users")
       .then((response) => response.json())
       .then((data) => {
         setUsers(data);
       })
       .catch((error) => console.error("Error fetching users:", error));
+
+    // Fetch the comments from your API
+    fetch("http://localhost:8088/comments")
+      .then((response) => response.json())
+      .then((data) => {
+        setComments(data);
+      })
+      .catch((error) => console.error("Error fetching comments:", error));
   }, []);
 
   const getAuthorName = (userId) => {
@@ -58,7 +67,7 @@ export const Forums = () => {
       author: getAuthorName(currentUser.id),
     };
 
-    // Save the new post to your API (you can replace this with your API post logic)
+    // Save the new post to your API
     fetch("http://localhost:8088/post", {
       method: "POST",
       headers: {
@@ -75,7 +84,7 @@ export const Forums = () => {
   };
 
   const handleDeletePost = (postId) => {
-    // Delete the post from your API (you can replace this with your API delete logic)
+    // Delete the post from your API
     fetch(`http://localhost:8088/post/${postId}`, {
       method: "DELETE",
     })
@@ -96,8 +105,8 @@ export const Forums = () => {
       topic,
       content,
     };
+    // Update the post on your API
 
-    // Update the post on your API (you can replace this with your API update logic)
     fetch(`http://localhost:8088/post/${postId}`, {
       method: "PUT",
       headers: {
@@ -119,13 +128,30 @@ export const Forums = () => {
     setShowNewPostModal(true);
     setEditingPost(null);
   };
+
   const handleTopicFilterChange = (e) => {
     setTopicFilter(e.target.value);
   };
+  const handleAddComment = (postId, comment) => {
+    const newComment = {
+      id: Date.now(), // This is just for demonstration, in practice, the backend will generate the comment ID
+      postId,
+      content: comment.content,
+      userId: comment.userId,
+      author: getAuthorName(comment.userId), // Include the author's name for the comment
+    };
+  
+    // Save the new comment to local storage
+    const existingComments = JSON.parse(localStorage.getItem("comments")) || [];
+    const updatedComments = [...existingComments, newComment];
+    localStorage.setItem("comments", JSON.stringify(updatedComments));
+  
+    // Update the state with the new comment
+    setComments(updatedComments);
+  };
+  const filteredPosts =
+    topicFilter === "All" ? posts : posts.filter((post) => post.topic === topicFilter);
 
-  const filteredPosts = topicFilter === "All" ? posts : posts.filter((post) => post.topic === topicFilter);
-
- 
   return (
     <div className="forums-container">
       <h1>Forums</h1>
@@ -133,7 +159,11 @@ export const Forums = () => {
         <>
           <div>
             <label htmlFor="topicFilter">Select a Topic:</label>
-            <select id="topicFilter" value={topicFilter} onChange={handleTopicFilterChange}>
+            <select
+              id="topicFilter"
+              value={topicFilter}
+              onChange={handleTopicFilterChange}
+            >
               <option value="All">All Topics</option>
               {topics.map((topic) => (
                 <option key={topic.id} value={topic.subject}>
@@ -160,6 +190,20 @@ export const Forums = () => {
                         <button onClick={() => handleDeletePost(post.id)}>Delete</button>
                       </div>
                     )}
+                    <CommentForm
+                      postId={post.id}
+                      currentUser={currentUser}
+                      handleAddComment={handleAddComment} // Pass the function to the CommentForm
+                    />
+                    <ul>
+                      {comments.filter((comment) => comment.postId === post.id)
+                        .map((comment) => (
+                          <li key={comment.id}>
+                            <p>{comment.content}</p>
+                            <p>{comment.author}</p>
+                          </li>
+                        ))}
+                    </ul>
                   </li>
                 ))}
               </ul>
