@@ -10,9 +10,10 @@ export const Forums = () => {
   const [topics, setTopics] = useState([]);
   const [topicFilter, setTopicFilter] = useState("All");
   const [users, setUsers] = useState([]);
-  const [comments, setComments] = useState([]); // New state to store comments
+  const [comments, setComments] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [showNewPostModal, setShowNewPostModal] = useState(false);
+  const [newPosts, setNewPosts] = useState([]);
   const [editingPost, setEditingPost] = useState(null);
   const navigate = useNavigate();
 
@@ -56,18 +57,19 @@ export const Forums = () => {
 
   const getAuthorName = (userId) => {
     const user = users.find((user) => user.id === userId);
-    return user ? user.name : "Unknown";
+    return user ? user.fullName : "Unknown";
   };
 
   const handlePostCreation = (formData) => {
+    const authorName = getAuthorName(currentUser.id);
     const newPost = {
       topic: formData.topic,
       content: formData.content,
       userId: currentUser.id,
-      author: getAuthorName(currentUser.id),
+      author: authorName,
     };
 
-    // Save the new post to your API
+    // Save the new post to your API 
     fetch("http://localhost:8088/post", {
       method: "POST",
       headers: {
@@ -77,7 +79,7 @@ export const Forums = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setPosts((prevPosts) => [...prevPosts, data]);
+        setNewPosts((prevNewPosts) => [...prevNewPosts, data]);
         setShowNewPostModal(false);
       })
       .catch((error) => console.error("Error creating post:", error));
@@ -89,13 +91,16 @@ export const Forums = () => {
       method: "DELETE",
     })
       .then(() => {
+        setNewPosts((prevNewPosts) =>
+          prevNewPosts.filter((post) => post.id !== postId)
+        );
         setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
       })
       .catch((error) => console.error("Error deleting post:", error));
   };
 
   const handleEditPost = (postId) => {
-    const postToEdit = posts.find((post) => post.id === postId);
+    const postToEdit = filteredPosts.find((post) => post.id === postId);
     setEditingPost(postToEdit);
   };
 
@@ -105,8 +110,8 @@ export const Forums = () => {
       topic,
       content,
     };
-    // Update the post on your API
 
+    // Update the post on your API
     fetch(`http://localhost:8088/post/${postId}`, {
       method: "PUT",
       headers: {
@@ -116,9 +121,16 @@ export const Forums = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setPosts((prevPosts) =>
-          prevPosts.map((post) => (post.id === postId ? data : post))
+        const updatedNewPosts = newPosts.map((post) =>
+          post.id === postId ? data : post
         );
+        setNewPosts(updatedNewPosts);
+
+        const updatedPosts = posts.map((post) =>
+          post.id === postId ? data : post
+        );
+        setPosts(updatedPosts);
+
         setEditingPost(null);
       })
       .catch((error) => console.error("Error updating post:", error));
@@ -132,85 +144,59 @@ export const Forums = () => {
   const handleTopicFilterChange = (e) => {
     setTopicFilter(e.target.value);
   };
+
   const handleAddComment = (postId, comment) => {
     const newComment = {
-      id: Date.now(), // This is just for demonstration, in practice, the backend will generate the comment ID
-      postId,
+      postId: postId,
       content: comment.content,
       userId: comment.userId,
-      author: getAuthorName(comment.userId), // Include the author's name for the comment
+      author: getAuthorName(comment.userId),
     };
-  
-    // Save the new comment to local storage
-    const existingComments = JSON.parse(localStorage.getItem("comments")) || [];
-    const updatedComments = [...existingComments, newComment];
-    localStorage.setItem("comments", JSON.stringify(updatedComments));
-  
-    // Update the state with the new comment
-    setComments(updatedComments);
+
+    // Save the new comment to your API
+    fetch("http://localhost:8088/comments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newComment),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setComments((prevComments) => [...prevComments, data]);
+      })
+      .catch((error) => console.error("Error creating comment:", error));
   };
+
+  const handleDeleteComment = (commentId) => {
+    // Delete the comment from your API
+    fetch(`http://localhost:8088/comments/${commentId}`, {
+      method: "DELETE",
+    })
+      .then(() => {
+        setComments((prevComments) =>
+          prevComments.filter((comment) => comment.id !== commentId)
+        );
+      })
+      .catch((error) => console.error("Error deleting comment:", error));
+  };
+
   const filteredPosts =
-    topicFilter === "All" ? posts : posts.filter((post) => post.topic === topicFilter);
+    topicFilter === "All"
+      ? [...posts, ...newPosts]
+      : [...posts, ...newPosts].filter((post) => post.topic === topicFilter);
 
   return (
     <div className="forums-container">
       <h1>Forums</h1>
       {currentUser ? (
         <>
-          <div>
-            <label htmlFor="topicFilter">Select a Topic:</label>
-            <select
-              id="topicFilter"
-              value={topicFilter}
-              onChange={handleTopicFilterChange}
-            >
-              <option value="All">All Topics</option>
-              {topics.map((topic) => (
-                <option key={topic.id} value={topic.subject}>
-                  {topic.subject}
-                </option>
-              ))}
-            </select>
-          </div>
+          {/* New Post Button */}
           <button className="post-button" onClick={handleNewPostClick}>
             New Post
           </button>
-          {filteredPosts.length > 0 ? (
-            <>
-              <h2>Existing Posts</h2>
-              <ul className="existing-posts">
-                {filteredPosts.map((post) => (
-                  <li key={post.id} className="post-item">
-                    <h3>{post.topic}</h3>
-                    <p>Author: {post.author}</p>
-                    <p>{post.content}</p>
-                    {currentUser.id === post.userId && (
-                      <div>
-                        <button onClick={() => handleEditPost(post.id)}>Edit</button>
-                        <button onClick={() => handleDeletePost(post.id)}>Delete</button>
-                      </div>
-                    )}
-                    <CommentForm
-                      postId={post.id}
-                      currentUser={currentUser}
-                      handleAddComment={handleAddComment} // Pass the function to the CommentForm
-                    />
-                    <ul>
-                      {comments.filter((comment) => comment.postId === post.id)
-                        .map((comment) => (
-                          <li key={comment.id}>
-                            <p>{comment.content}</p>
-                            <p>{comment.author}</p>
-                          </li>
-                        ))}
-                    </ul>
-                  </li>
-                ))}
-              </ul>
-            </>
-          ) : (
-            <p>No posts found.</p>
-          )}
+
+          {/* New Post Form */}
           {showNewPostModal && (
             <NewPostForm
               handlePostCreation={handlePostCreation}
@@ -225,11 +211,78 @@ export const Forums = () => {
               currentUser={currentUser}
             />
           )}
-          {editingPost && (
-            <div>
-              <h2>Edit Post</h2>
-              <EditForum post={editingPost} handlePostUpdate={handlePostUpdate} />
-            </div>
+
+          {/* Existing Posts */}
+          {filteredPosts.length > 0 ? (
+            <>
+              <h2>Posts</h2>
+              <ul className="existing-posts">
+                {filteredPosts.map((post) => (
+                  <div key={post.id} className="post-item">
+                    <h3>{post.topic}</h3>
+                    <p className="post-author">Author: {post.author}</p>
+                    <p className="post-content">{post.content}</p>
+                    {currentUser.id === post.userId && (
+                      <div className="post-actions">
+                        <button onClick={() => handleEditPost(post.id)}>
+                          Edit
+                        </button>
+                        <button onClick={() => handleDeletePost(post.id)}>
+                          Delete
+                        </button>
+                      </div>
+                    )}
+
+                    {/* New Comment Form */}
+                    <CommentForm
+                      postId={post.id}
+                      currentUser={currentUser}
+                      setComments={setComments}
+                      getAuthorName={getAuthorName}
+                      handleAddComment={handleAddComment}
+                      handleDeleteComment={handleDeleteComment}
+                    />
+
+                    {/* Comments List */}
+                    <ul className="comments-list">
+                      {comments
+                        .filter((comment) => comment.postId === post.id)
+                        .map((comment) => (
+                          <div key={comment.id} className="comment-container">
+                            <p>{comment.content}</p>
+                            <p className="comment-author">
+                              Author: {comment.author}
+                            </p>
+                            {currentUser.id === comment.userId && (
+                              <button
+                                onClick={() => handleDeleteComment(comment.id)}
+                                className="delete-comment"
+                              >
+                                Delete Comment
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                    </ul>
+
+                    {/* Edit Post Form */}
+                    {editingPost && editingPost.id === post.id && (
+                      <div className="edit-post-form">
+                        <h2>Edit Post</h2>
+                        <EditForum
+                          post={editingPost}
+                          handlePostUpdate={handlePostUpdate}
+                          topics={topics}
+                          handleCancel={() => setEditingPost(null)}
+                        />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <p>No posts found.</p>
           )}
         </>
       ) : (
@@ -238,3 +291,4 @@ export const Forums = () => {
     </div>
   );
 };
+

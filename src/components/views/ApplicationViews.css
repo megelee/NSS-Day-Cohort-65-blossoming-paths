@@ -1,32 +1,60 @@
-
 .title--home {
     font-size: 50px;
+    /* background-color: aqua;
+    opacity: 0.8;
+    border-radius: 25px;
+    padding: 0.25rem; */
     color: #333;
- 
-}
-
-.text {
-    font-size: 24px;
+    position: absolute;
+    top: 10%; /* Move the title to the center vertically */
+    left: 50%; /* Move the title to the center horizontally */
+    transform: translate(-50%, -50%); /* Center the title exactly */
+    z-index: 20;
+  }
+  
+  .text {
+    font-size: 27px;
     font-style: italic;
+    transform: translate(-50%, -50%);
     color: #333;
-    width: 40em;
-   
-}
+    width: 30em;
+    position: absolute;
+    top: 50%; /* Move the text down from the top */
+    left: 53%; /* Move the text to the center horizontally */
+    transform: translate(-50%, -50%); /* Center the text exactly */
+  }
 
-
-.homepage-container {
+  .hompage{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .homepage-container {
+    position: relative; /* Add this to allow absolute positioning for the title and text */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 50px;
-   
-}
+    /* padding: 50px; */
+    min-height: 100vh;  
+  }
 
-.homepage-image {
-    width: 50%; 
-    height: auto;
-    margin-bottom: 20px;
+  .homepage-image {
+    width: 105%;
+    height: 150%;
+    object-fit: cover; /* Maintain aspect ratio and cover the whole screen */
+    margin-left: -2.1rem;
+    position: fixed;
+    /* top: 0;
+    left: 0; */
+    opacity: 0.8;
+    z-index: 0;
+  }
+  .second-image {
+    width: 40em;
+    height: 40em;
+    margin-top: 40em; /* Adjust the margin-top as needed to create space between text and image */
     opacity: 0.8;
     transition: opacity 0.3s ease;
-}
+  }
+  

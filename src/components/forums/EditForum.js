@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-
-
-export const EditForum = ({ post, handlePostUpdate }) => {
+import "./Forums.css";
+export const EditForum = ({ post, handlePostUpdate, topics, handleCancel }) => {
   const [topic, setTopic] = useState(post.topic);
   const [content, setContent] = useState(post.content);
 
@@ -22,12 +21,18 @@ export const EditForum = ({ post, handlePostUpdate }) => {
     <form className="form-container" onSubmit={handleSubmit}>
       <div>
         <label htmlFor="topic">Topic:</label>
-        <input
-          type="text"
+        <select
           id="topic"
           value={topic}
           onChange={handleTopicChange}
-        />
+        >
+          <option value="">Select a topic...</option>
+          {topics.map((topic) => (
+            <option key={topic.id} value={topic.subject}>
+              {topic.subject}
+            </option>
+          ))}
+        </select>
       </div>
       <div>
         <label htmlFor="content">Content:</label>
@@ -37,7 +42,11 @@ export const EditForum = ({ post, handlePostUpdate }) => {
           onChange={handleContentChange}
         />
       </div>
+  
       <button type="submit">Update Post</button>
+      <button type="button" onClick={handleCancel}>
+          Cancel
+        </button>
     </form>
   );
 };

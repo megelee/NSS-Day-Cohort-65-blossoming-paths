@@ -14,7 +14,7 @@ body {
     left: 0;
     width: 85%;
     height: 100%;
-    background-image: url('/Users/meganlee/workspace/blossoming-paths/src/images/homeImage.png');
+    background-image: url('/Users/meganlee/workspace/blossoming-paths/src/images/Yellow Watercolor Wild Flowers Notes A4 Document.png');
     background-position: right;
     background-size: cover;
     background-repeat: no-repeat;
@@ -35,7 +35,7 @@ fieldset {
 .form--login {
     display: inline-block;
     margin-top: 15em;
-    margin-left: 48em;
+    margin-left: 10em;
     text-align: left;
     z-index: 1;
     width: 30rem; /* Set the same width for both login and register containers */
@@ -85,7 +85,7 @@ fieldset {
     margin-left: 60em;
 }
 .link--register{
-    margin-left: 63em;
+    margin-left: 25em;
 }
 
 .button--close {

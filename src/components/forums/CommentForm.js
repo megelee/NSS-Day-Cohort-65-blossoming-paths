@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 
-export const CommentForm = ({ postId, currentUser, handleAddComment }) => {
+
+export const CommentForm = ({ postId, currentUser, getAuthorName, handleAddComment, handleDeleteComment, setComments }) => {
   const [content, setContent] = useState("");
+
 
   const handleCommentCreation = (e) => {
     e.preventDefault();
-
+    const authorName = getAuthorName(currentUser.id);
+    
     const newComment = {
+
       postId: postId,
       content: content,
       userId: currentUser.id,
-      author: (content.userId),
+      author: authorName,
     };
 
     fetch("http://localhost:8088/comments", {
@@ -23,10 +27,24 @@ export const CommentForm = ({ postId, currentUser, handleAddComment }) => {
       .then((response) => response.json())
       .then((data) => {
         // Call the handleAddComment function to update the comments in Forums component
-        handleAddComment(postId, data);
+        // handleAddComment(postId, data);
+        setComments((prevComments) => [...prevComments, data]);
         setContent("");
+        e.preventDefault();
       })
       .catch((error) => console.error("Error creating comment:", error));
+  };
+
+  const handleCommentDeletion = (commentId) => {
+    // Implement the logic to delete the comment (e.g., make an API call)
+    fetch(`http://localhost:8088/comments/${commentId}`, {
+      method: "DELETE",
+    })
+      .then(() => {
+        // Call the handleDeleteComment function to update the comments in Forums component
+        handleDeleteComment(commentId);
+      })
+      .catch((error) => console.error("Error deleting comment:", error));
   };
 
   return (
@@ -40,8 +58,6 @@ export const CommentForm = ({ postId, currentUser, handleAddComment }) => {
     </div>
   );
 };
-
-
 
 
  

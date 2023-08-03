@@ -1,109 +1,190 @@
-/* NewPostForm.css */
-
-.new-post-form {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f3f0fe;
-  border: 1px solid #d1c4ff;
-  border-radius: 8px;
-}
 /* Forums.css */
 
+/* Main container for the Forums component */
 .forums-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
   font-family: Arial, sans-serif;
+  background-color: #f2f0fa;
+  padding: 20px;
 }
 
+/* Heading styles */
 h1 {
+  color: #6a5acd;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
-.post-button {
+h2 {
+  color: #6a5acd;
+  margin-top: 20px;
+}
+
+/* Topic filter styles */
+label {
   display: block;
-  margin: 20px auto;
+  margin-bottom: 10px;
+  color: #6a5acd;
+  font-weight: bold;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #333;
+}
+
+/* Buttons */
+.post-button,
+.form-buttons {
+  display: block;
+  margin: 10px auto;
   padding: 10px 20px;
-  background-color: #6c63ff;
+  background-color: #6a5acd;
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  text-transform: uppercase;
+  transition: background-color 0.2s ease-in-out;
 }
 
-.post-button:hover {
-  background-color: #5149e2;
+.post-button:hover,
+.form-buttons:hover {
+  background-color: #8354af;
+}
+
+/* Existing posts styles */
+.existing-posts {
+  list-style: none;
+  padding: 0;
 }
 
 .post-item {
-  border: 1px solid #d1c4ff;
-  padding: 10px;
-  margin: 10px 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  background-color: #ebe7ff;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .post-item h3 {
-  margin: 0;
-  color: #6c63ff;
+  color: #6a5acd;
+  margin-bottom: 15px;
 }
 
 .post-item p {
-  margin-top: 10px;
-  color: #444;
+  color: #333;
+  line-height: 1.6;
 }
 
-.author-info {
-  font-style: italic;
-  font-size: 14px;
-  color: #777;
-}
-
-.comment-item {
-  margin-top: 10px;
-  padding: 5px;
-  border: 1px solid #d1c4ff;
-  border-radius: 4px;
-  background-color: #ebe7ff;
-}
-
-.comment-item p {
-  margin: 0;
-  color: #444;
-}
-
-.comment-item .author-info {
-  font-style: italic;
-  font-size: 12px;
-  color: #777;
-}
-
-textarea {
+/* New post form styles */
+.new-post-form,
+.edit-post-form {
   width: 100%;
-  height: 80px;
-  margin: 10px 0;
-  padding: 5px;
-  border: 1px solid #d1c4ff;
+  padding: 20px;
+  background-color: #f2f0fa;
   border-radius: 4px;
-  resize: vertical;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-button {
-  padding: 5px 10px;
-  background-color: #6c63ff;
+.new-post-form label,
+.edit-post-form label {
+  display: block;
+  margin-bottom: 10px;
+  color: #6a5acd;
+  font-weight: bold;
+}
+
+.new-post-form input[type="text"],
+.new-post-form textarea,
+.edit-post-form input[type="text"],
+.edit-post-form textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.new-post-form textarea,
+.edit-post-form textarea {
+  min-height: 150px;
+  resize: vertical; /* Allow vertical resizing of the textarea */
+}
+
+.new-post-form button,
+.edit-post-form button {
+  background-color: #6a5acd;
   color: #fff;
   border: none;
   border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.new-post-form button.cancel,
+.edit-post-form button.cancel {
+  background-color: #ccc;
+  margin-right: 10px;
+}
+
+.new-post-form button:hover,
+.edit-post-form button:hover {
+  background-color: #8354af;
+}
+
+/* Comment container styles */
+.comment-container,
+.comment-box {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 15px;
+  margin-top: 10px;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.comment-container p {
+  color: #333;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+/* Delete button styles */
+.delete-comment {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: #6a5acd;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
   cursor: pointer;
   font-size: 14px;
-  text-transform: uppercase;
+  transition: background-color 0.2s ease-in-out;
 }
 
-button:hover {
-  background-color: #5149e2;
+.delete-comment:hover {
+  background-color: #d24500;
 }
 
+/* No posts found styles */
+.no-posts,
+.sign-in-prompt {
+  color: #6a5acd;
+  text-align: center;
+  font-size: 18px;
+  margin-top: 30px;
+}
