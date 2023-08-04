@@ -8,6 +8,8 @@ import { Forums } from "../forums/Forums";
 import { NewPostForm } from '../forums/NewPostForm.js';
 import { EditForum } from '../forums/EditForum.js';
 import { CommentForm } from '../forums/CommentForm.js';
+import titleImage from '/Users/meganlee/workspace/blossoming-paths/src/images/Beige Brown Minimal Lettering Logo Concept.png';
+
 // import secondImage from '/Users/meganlee/workspace/blossoming-paths/src/images/Untitled design (2) copy.png'
 
 const text =
@@ -16,9 +18,11 @@ const text =
 const Home = () => {
   return (
     <div className="homepage">
+                  <img className="title-image" src={titleImage} alt="Title Image" />
+
       <div>
 
-      <h1 className="title--home">Blossoming Paths</h1>
+      {/* <h1 className="title--home">Blossoming Paths</h1> */}
       </div>
       <div>
 

@@ -4,24 +4,32 @@
     opacity: 0.8;
     border-radius: 25px;
     padding: 0.25rem; */
-    color: #333;
+    color: #393838;
     position: absolute;
     top: 10%; /* Move the title to the center vertically */
     left: 50%; /* Move the title to the center horizontally */
     transform: translate(-50%, -50%); /* Center the title exactly */
     z-index: 20;
   }
+  .title-image{
+    width: 80em;
+    height: 50em;
+    margin-top: 40em; /* Adjust the margin-top as needed to create space between text and image */
+    opacity: 0.9;
   
+  }
   .text {
-    font-size: 27px;
+    font-size: 30px;
     font-style: italic;
     transform: translate(-50%, -50%);
-    color: #333;
-    width: 30em;
+    color: rgb(82, 78, 78);
+    width: 27em;
+    margin-top: 5em;
     position: absolute;
     top: 50%; /* Move the text down from the top */
     left: 53%; /* Move the text to the center horizontally */
     transform: translate(-50%, -50%); /* Center the text exactly */
+    opacity: 0.8;
   }
 
   .hompage{
@@ -50,11 +58,5 @@
     opacity: 0.8;
     z-index: 0;
   }
-  .second-image {
-    width: 40em;
-    height: 40em;
-    margin-top: 40em; /* Adjust the margin-top as needed to create space between text and image */
-    opacity: 0.8;
-    transition: opacity 0.3s ease;
-  }
+
   

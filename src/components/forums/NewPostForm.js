@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Forums.css";
+
 export const NewPostForm = ({ handlePostCreation, handleCancel, topics, currentUser }) => {
   const [selectedTopic, setSelectedTopic] = useState("");
   const [content, setContent] = useState("");
@@ -13,7 +14,7 @@ export const NewPostForm = ({ handlePostCreation, handleCancel, topics, currentU
   };
 
   return (
-    <form className="post-form">
+    <form className="new-post-form"> {/* Add the 'new-post-form' class */}
       <h2>New Post</h2>
       <div className="form-group">
         <label htmlFor="topic">Topic</label>
@@ -38,18 +39,13 @@ export const NewPostForm = ({ handlePostCreation, handleCancel, topics, currentU
           onChange={(e) => setContent(e.target.value)}
         />
       </div>
-      {currentUser ? <p>Author: {currentUser.name}</p> : null}
-      <div className="post-button">
-        <button type="button" onClick={handleSubmit}>
-          Submit
-        </button>
+      {/* <div className="form-buttons">  */}
+        <button type="submit" onClick={handleSubmit}>Submit</button>
         <button type="button" onClick={handleCancel}>
           Cancel
         </button>
-      </div>
+      {/* </div> */}
     </form>
   );
 };
-
-
 

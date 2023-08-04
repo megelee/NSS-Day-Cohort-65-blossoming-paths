@@ -7,19 +7,36 @@ body {
     -moz-osx-font-smoothing: grayscale;
     background-color: lavenderblush;
 }
+/* .container--center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 34em;
+} */
 
-.background-image-container {
+.title-image {
+    width: 30%;
+    height: 50%;
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 85%;
-    height: 100%;
-    background-image: url('/Users/meganlee/workspace/blossoming-paths/src/images/Yellow Watercolor Wild Flowers Notes A4 Document.png');
-    background-position: right;
-    background-size: cover;
-    background-repeat: no-repeat;
-    z-index: -1; /* Ensure it stays behind other elements */
+    margin-top: -12em;
+    margin-left: -4em;
+    z-index: -10;
+    /* Adjust the margins to center the image */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.7;
 }
+
+.homepage-image {
+    width: 105%;
+    height: 120em; /* This will maintain the aspect ratio */
+    position: absolute;
+    /* top: 0;
+    left: 0; */
+    z-index: -20; /* Set a lower z-index to place the image behind other elements */
+  }
 
 fieldset {
     min-width: 0;
@@ -31,20 +48,21 @@ fieldset {
 .container--login{
     margin-left:25em;
 }
-
 .form--login {
     display: inline-block;
-    margin-top: 15em;
-    margin-left: 10em;
+    /* Adjust the margins to center the form */
+    margin-top: 26em;
+    margin-left: 11em;
     text-align: left;
     z-index: 1;
-    width: 30rem; /* Set the same width for both login and register containers */
-    background-color: hsla(286, 60%, 72%, 0.199);
+    width: 30rem;
+    background-color: hsla(268, 35%, 67%, 0.228);
     background-blend-mode: overlay;
     background-repeat: no-repeat;
-    min-height: 12rem; /* Set the same height for both login and register containers */
-    padding: 2rem; /* Add padding to create spacing around the content */
+    min-height: 12rem;
+    padding: 2rem;
 }
+
 .form--login > fieldset > input[type="email"] {
     width: 100%; /* Set the input width to 100% to fill the container */
 }
@@ -68,6 +86,7 @@ fieldset {
 
 .title-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100px;
@@ -75,20 +94,39 @@ fieldset {
 }
 
 .title-label {
-    margin-top: 3em;
-    margin-left: 0em;
-    font-size: 60px;
+    margin-top: 45em;
+    margin-left: -18em;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+    color: rgb(141, 121, 163);
+    opacity: 0.8;
 }
 
 .link--login {
     margin-top: 1em;
-    margin-left: 60em;
+    margin-left: 23em;
 }
 .link--register{
     margin-left: 25em;
 }
-
-.button--close {
-    position: relative;
-    bottom: -2rem;
-}
+.form--login button[type="submit"] {
+    background-color:rgb(141, 121, 163);; /* Set the background color */
+    color: white; /* Set the text color */
+    padding: 14px 20px; /* Adjust the padding as needed */
+    margin: 10px 0; /* Adjust the margin as needed */
+    margin-left: 8em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 50%; /* Set the button width to fill the container */
+  }
+  
+  /* Apply styles on button hover */
+  .form--login button[type="submit"]:hover {
+    background-color:rgb(97, 54, 142);;
+  }
+  
+  /* Apply styles on button focus */
+  .form--login button[type="submit"]:focus {
+    outline: none; /* Remove the default focus outline */
+  }

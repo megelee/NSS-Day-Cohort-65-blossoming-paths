@@ -1,8 +1,9 @@
-
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import image from '/Users/meganlee/workspace/blossoming-paths/src/images/Yellow Watercolor Wild Flowers Notes A4 Document.png';
+import titleImage from '/Users/meganlee/workspace/blossoming-paths/src/images/Beige Brown Minimal Lettering Logo Concept.png';
+
 import "./Login.css";
 
 export const Login = () => {
@@ -32,15 +33,16 @@ export const Login = () => {
     };
 
     return (
-        <div>
+        <div className="container--center">
             {/* New background image container */}
-            <div className="background-image-container" >
+            <img className="homepage-image" src={image} alt="Login Image" />
+            <img className="title-image" src={titleImage} alt="Title Image" />
 
             {/* Login container */}
             <main className="container--login">
                 {/* Title outside the form */}
                 <div className="title-container">
-                    <h1 className="title-label">Blossoming Paths</h1>
+                    {/* <h1 className="title-label-login">Blossoming Paths</h1> */}
                 </div>
 
                 <section>
@@ -51,12 +53,12 @@ export const Login = () => {
                             <div className="email-container">
                                 <div className="inner-container">
                                     <div className="">
-
                                         <label htmlFor="inputEmail"> Email address </label>
                                     </div>
                                     <div>
                                         <input
                                             type="email"
+                                            id="inputEmail"
                                             value={email}
                                             onChange={(evt) => set(evt.target.value)}
                                             className="form-control"
@@ -64,6 +66,7 @@ export const Login = () => {
                                             required
                                             autoFocus
                                         />
+
                                     </div>
                                 </div>
                             </div>
@@ -78,7 +81,6 @@ export const Login = () => {
                     <Link to="/register">Not a member yet?</Link>
                 </section>
             </main>
-        </div>
         </div>
     );
 };

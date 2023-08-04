@@ -3,6 +3,7 @@ import { NewPostForm } from "../forums/NewPostForm.js";
 import { EditForum } from "../forums/EditForum.js";
 import { CommentForm } from "../forums/CommentForm.js";
 import { useNavigate } from "react-router-dom";
+import image from '/Users/meganlee/workspace/blossoming-paths/src/images/Yellow Watercolor Wild Flowers Notes A4 Document.png';
 import "./Forums.css";
 
 export const Forums = () => {
@@ -15,6 +16,9 @@ export const Forums = () => {
   const [showNewPostModal, setShowNewPostModal] = useState(false);
   const [newPosts, setNewPosts] = useState([]);
   const [editingPost, setEditingPost] = useState(null);
+  const [showDeleteButton, setShowDeleteButton] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 5; // Set the number of posts to display per page
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -102,6 +106,7 @@ export const Forums = () => {
   const handleEditPost = (postId) => {
     const postToEdit = filteredPosts.find((post) => post.id === postId);
     setEditingPost(postToEdit);
+    setShowDeleteButton(true);
   };
 
   const handlePostUpdate = (postId, topic, content) => {
@@ -132,6 +137,7 @@ export const Forums = () => {
         setPosts(updatedPosts);
 
         setEditingPost(null);
+        setShowDeleteButton(false);
       })
       .catch((error) => console.error("Error updating post:", error));
   };
@@ -183,14 +189,34 @@ export const Forums = () => {
 
   const filteredPosts =
     topicFilter === "All"
+    
       ? [...posts, ...newPosts]
       : [...posts, ...newPosts].filter((post) => post.topic === topicFilter);
+      
+       // Calculate the index of the last post on the current page
+  const indexOfLastPost = currentPage * postsPerPage;
+  // Calculate the index of the first post on the current page
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  // Get the posts to display on the current page
+  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
 
-  return (
-    <div className="forums-container">
-      <h1>Forums</h1>
-      {currentUser ? (
-        <>
+  // Define the function to handle next page button click
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  // Define the function to handle previous page button click
+  const handlePreviousPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
+
+      
+      return (
+        <div className="forums-container">
+                <img className="homepage-image" src={image} alt="Login Image" />
+
+          <h1>Forums</h1>
+
           {/* New Post Button */}
           <button className="post-button" onClick={handleNewPostClick}>
             New Post
@@ -211,17 +237,28 @@ export const Forums = () => {
               currentUser={currentUser}
             />
           )}
+          
+          {/* Drop-down topic filter */}
+          <label htmlFor="topicFilter">Select a Topic:</label>
+<select id="topicFilter" value={topicFilter} onChange={handleTopicFilterChange}>
+            <option value="All">All Topics</option>
+            {topics.map((topic) => (
+              <option key={topic.id} value={topic.subject}>
+                {topic.subject}
+              </option>
+            ))}
+          </select>
+      {currentUser ? (
+        <>
+          
 
           {/* Existing Posts */}
-          {filteredPosts.length > 0 ? (
+          {currentPosts.length > 0 ? (
             <>
               <h2>Posts</h2>
               <ul className="existing-posts">
                 {filteredPosts.map((post) => (
                   <div key={post.id} className="post-item">
-                    <h3>{post.topic}</h3>
-                    <p className="post-author">Author: {post.author}</p>
-                    <p className="post-content">{post.content}</p>
                     {currentUser.id === post.userId && (
                       <div className="post-actions">
                         <button onClick={() => handleEditPost(post.id)}>
@@ -233,13 +270,20 @@ export const Forums = () => {
                       </div>
                     )}
 
+                    <h3>{post.topic}</h3>
+                    <p className="post-author">Author: {post.author}</p>
+                    <p className="post-content">{post.content}</p>
+
                     {/* New Comment Form */}
                     <CommentForm
                       postId={post.id}
                       currentUser={currentUser}
-                      setComments={setComments}
                       getAuthorName={getAuthorName}
                       handleAddComment={handleAddComment}
+                      handleCancel={() => {
+                        // Handle cancel for comment form here
+                      }}
+                      setComments={setComments}
                       handleDeleteComment={handleDeleteComment}
                     />
 
@@ -255,7 +299,9 @@ export const Forums = () => {
                             </p>
                             {currentUser.id === comment.userId && (
                               <button
-                                onClick={() => handleDeleteComment(comment.id)}
+                                onClick={() =>
+                                  handleDeleteComment(comment.id)
+                                }
                                 className="delete-comment"
                               >
                                 Delete Comment
@@ -291,4 +337,3 @@ export const Forums = () => {
     </div>
   );
 };
-

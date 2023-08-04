@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import image from '/Users/meganlee/workspace/blossoming-paths/src/images/Yellow Watercolor Wild Flowers Notes A4 Document.png';
+import titleImage from '/Users/meganlee/workspace/blossoming-paths/src/images/Beige Brown Minimal Lettering Logo Concept.png';
+
 import "./Login.css";
 
 export const Register = (props) => {
@@ -55,8 +58,9 @@ export const Register = (props) => {
 
   return (
     <div>
-      {/* New background image container */}
-      <div className="background-image-container" />
+       {/* New background image container */}
+       <img className="homepage-image" src={image} alt="Login Image" />
+       <img className="title-image" src={titleImage} alt="Title Image" />
 
       {/* Create Account container */}
       <main className="container--login">
