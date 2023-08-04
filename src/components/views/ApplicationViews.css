@@ -12,7 +12,7 @@
     z-index: 20;
   }
   .title-image{
-    width: 80em;
+    width: 0em;
     height: 50em;
     margin-top: 40em; /* Adjust the margin-top as needed to create space between text and image */
     opacity: 0.9;

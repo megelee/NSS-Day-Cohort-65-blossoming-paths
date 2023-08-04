@@ -69,7 +69,7 @@ fieldset {
 
 .form-control {
     display: block;
-    width: 80%; /* Set the input width to 100% to fill the container */
+    width: 94%; /* Set the input width to 100% to fill the container */
     height: calc(1.5em + .75rem + 2px);
     padding: .375rem .75rem;
     font-size: 1rem;
@@ -104,7 +104,7 @@ fieldset {
 
 .link--login {
     margin-top: 1em;
-    margin-left: 23em;
+    margin-left: 22.5em;
 }
 .link--register{
     margin-left: 25em;
@@ -123,7 +123,7 @@ fieldset {
   
   /* Apply styles on button hover */
   .form--login button[type="submit"]:hover {
-    background-color:rgb(97, 54, 142);;
+    background-color:rgb(97, 54, 142);
   }
   
   /* Apply styles on button focus */

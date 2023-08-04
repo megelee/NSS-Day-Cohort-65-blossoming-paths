@@ -17,8 +17,6 @@ export const Forums = () => {
   const [newPosts, setNewPosts] = useState([]);
   const [editingPost, setEditingPost] = useState(null);
   const [showDeleteButton, setShowDeleteButton] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 5; // Set the number of posts to display per page
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -151,28 +149,6 @@ export const Forums = () => {
     setTopicFilter(e.target.value);
   };
 
-  const handleAddComment = (postId, comment) => {
-    const newComment = {
-      postId: postId,
-      content: comment.content,
-      userId: comment.userId,
-      author: getAuthorName(comment.userId),
-    };
-
-    // Save the new comment to your API
-    fetch("http://localhost:8088/comments", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newComment),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setComments((prevComments) => [...prevComments, data]);
-      })
-      .catch((error) => console.error("Error creating comment:", error));
-  };
 
   const handleDeleteComment = (commentId) => {
     // Delete the comment from your API
@@ -192,31 +168,23 @@ export const Forums = () => {
     
       ? [...posts, ...newPosts]
       : [...posts, ...newPosts].filter((post) => post.topic === topicFilter);
-      
-       // Calculate the index of the last post on the current page
-  const indexOfLastPost = currentPage * postsPerPage;
-  // Calculate the index of the first post on the current page
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  // Get the posts to display on the current page
-  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
-
-  // Define the function to handle next page button click
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
-
-  // Define the function to handle previous page button click
-  const handlePreviousPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
-  };
-
-      
       return (
         <div className="forums-container">
                 <img className="homepage-image" src={image} alt="Login Image" />
 
           <h1>Forums</h1>
-
+          {/* Drop-down topic filter */}
+          <label htmlFor="topicFilter">Select a Topic:</label>
+<select id="topicFilter" value={topicFilter} onChange={handleTopicFilterChange}>
+            <option value="All">All Topics</option>
+            {topics.map((topic) => (
+              <option key={topic.id} value={topic.subject}>
+                {topic.subject}
+              </option>
+            ))}
+          </select>
+      {currentUser ? (
+        <>
           {/* New Post Button */}
           <button className="post-button" onClick={handleNewPostClick}>
             New Post
@@ -237,23 +205,9 @@ export const Forums = () => {
               currentUser={currentUser}
             />
           )}
-          
-          {/* Drop-down topic filter */}
-          <label htmlFor="topicFilter">Select a Topic:</label>
-<select id="topicFilter" value={topicFilter} onChange={handleTopicFilterChange}>
-            <option value="All">All Topics</option>
-            {topics.map((topic) => (
-              <option key={topic.id} value={topic.subject}>
-                {topic.subject}
-              </option>
-            ))}
-          </select>
-      {currentUser ? (
-        <>
-          
 
           {/* Existing Posts */}
-          {currentPosts.length > 0 ? (
+          {filteredPosts.length > 0 ? (
             <>
               <h2>Posts</h2>
               <ul className="existing-posts">
@@ -279,7 +233,6 @@ export const Forums = () => {
                       postId={post.id}
                       currentUser={currentUser}
                       getAuthorName={getAuthorName}
-                      handleAddComment={handleAddComment}
                       handleCancel={() => {
                         // Handle cancel for comment form here
                       }}

@@ -40,12 +40,10 @@ export const ApplicationViews = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/profile" element={<Profile />} />
       <Route path="/forums" element={<Forums />} />
       <Route path="/forums" element={<NewPostForm />} />
       <Route path="/forums" element={<EditForum />} />
       <Route path="/forums" element={<CommentForm />} />
-      <Route path="/profile" element={<Profile />} />
     </Routes>
   );
 };

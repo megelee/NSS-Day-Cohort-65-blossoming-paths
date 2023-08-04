@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export const CommentForm = ({ postId, currentUser, getAuthorName, handleAddComment }) => {
+export const CommentForm = ({ postId, currentUser, getAuthorName, setComments }) => {
   const [content, setContent] = useState("");
   const [showCommentBox, setShowCommentBox] = useState(false);
 
@@ -25,19 +25,22 @@ export const CommentForm = ({ postId, currentUser, getAuthorName, handleAddComme
     })
       .then((response) => response.json())
       .then((data) => {
-        handleAddComment(postId, data);
         setContent("");
-        setShowCommentBox(false); // Clear the content and hide the comment box
+        setShowCommentBox(false); 
+        setComments((prevComments) => [...prevComments, data]);
+
       })
       .catch((error) => console.error("Error creating comment:", error));
   };
+
+  
 
   const handleCancelComment = () => {
     setShowCommentBox(false); // Hide the comment box
     setContent(""); // Clear the content
   };
 
-  return (
+return (
     <div>
       {!showCommentBox && (
         <button className="comment-button" onClick={() => setShowCommentBox(true)}>
