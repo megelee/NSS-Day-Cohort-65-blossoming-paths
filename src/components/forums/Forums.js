@@ -3,6 +3,7 @@ import { NewPostForm } from "../forums/NewPostForm.js";
 import { EditForum } from "../forums/EditForum.js";
 import { CommentForm } from "../forums/CommentForm.js";
 import { useNavigate } from "react-router-dom";
+import titleImage from '/Users/meganlee/workspace/blossoming-paths/src/images/Beige Brown Minimal Lettering Logo Concept.png';
 import image from '/Users/meganlee/workspace/blossoming-paths/src/images/Yellow Watercolor Wild Flowers Notes A4 Document.png';
 import "./Forums.css";
 
@@ -172,7 +173,7 @@ export const Forums = () => {
         <div className="forums-container">
                 <img className="homepage-image" src={image} alt="Login Image" />
 
-          <h1>Forums</h1>
+                <img className="title-image-forums" src={titleImage} alt="Title Image" />
           {/* Drop-down topic filter */}
           <label htmlFor="topicFilter">Select a Topic:</label>
 <select id="topicFilter" value={topicFilter} onChange={handleTopicFilterChange}>
