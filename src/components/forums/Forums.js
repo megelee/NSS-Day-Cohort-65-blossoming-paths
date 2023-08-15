@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NewPostForm } from "../forums/NewPostForm.js";
 import { EditForum } from "../forums/EditForum.js";
 import { CommentForm } from "../forums/CommentForm.js";
+import {LoveButton} from '../forums/LoveButton';
 import { useNavigate } from "react-router-dom";
 import titleImage from '/Users/meganlee/workspace/blossoming-paths/src/images/Beige Brown Minimal Lettering Logo Concept.png';
 import image from '/Users/meganlee/workspace/blossoming-paths/src/images/Yellow Watercolor Wild Flowers Notes A4 Document.png';
@@ -17,7 +18,7 @@ export const Forums = () => {
   const [showNewPostModal, setShowNewPostModal] = useState(false);
   const [newPosts, setNewPosts] = useState([]);
   const [editingPost, setEditingPost] = useState(null);
-  const [showDeleteButton, setShowDeleteButton] = useState(false);
+  const [showDeleteButton,setShowDeleteButton] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,12 +27,17 @@ export const Forums = () => {
     setCurrentUser(storedUser);
 
     // Fetch the posts from your API
-    fetch("http://localhost:8088/post")
-      .then((response) => response.json())
-      .then((data) => {
-        setPosts(data);
-      })
-      .catch((error) => console.error("Error fetching posts:", error));
+fetch("http://localhost:8088/post")
+.then((response) => response.json())
+.then((data) => {
+  const postsWithLoves = data.map((post) => ({
+    ...post,
+    lovedByUserIds: post.lovedByUserIds || [], // Initialize the array if not present
+  }));
+  setPosts(postsWithLoves);
+})
+.catch((error) => console.error("Error fetching posts:", error));
+
 
     // Fetch the topics from your API
     fetch("http://localhost:8088/topics")
@@ -70,6 +76,7 @@ export const Forums = () => {
       content: formData.content,
       userId: currentUser.id,
       author: authorName,
+      createdAt: new Date().toISOString()
     };
 
     // Save the new post to your API 
@@ -164,26 +171,54 @@ export const Forums = () => {
       .catch((error) => console.error("Error deleting comment:", error));
   };
 
-  const filteredPosts =
-    topicFilter === "All"
-    
-      ? [...posts, ...newPosts]
-      : [...posts, ...newPosts].filter((post) => post.topic === topicFilter);
-      return (
-        <div className="forums-container">
-                <img className="homepage-image" src={image} alt="Login Image" />
 
-                <img className="title-image-forums" src={titleImage} alt="Title Image" />
-          {/* Drop-down topic filter */}
-          <label htmlFor="topicFilter">Select a Topic:</label>
-<select id="topicFilter" value={topicFilter} onChange={handleTopicFilterChange}>
-            <option value="All">All Topics</option>
-            {topics.map((topic) => (
-              <option key={topic.id} value={topic.subject}>
-                {topic.subject}
-              </option>
-            ))}
-          </select>
+
+  const filteredPosts =
+  topicFilter === "All"
+    ? [...posts, ...newPosts]
+    : [...posts, ...newPosts].filter((post) => post.topic === topicFilter);
+
+    filteredPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  
+    const handleLovePost = (postId) => {
+      const updatedPosts = posts.map((post) => {
+        if (post.id === postId) {
+          if (!post.lovedByUserIds) {
+            post.lovedByUserIds = [];
+          }
+    
+          const userIndex = post.lovedByUserIds.indexOf(currentUser.id);
+    
+          if (userIndex === -1) {
+            post.lovedByUserIds.push(currentUser.id);
+            post.loves = (post.loves || 0) + 1;
+          } else {
+            post.lovedByUserIds.splice(userIndex, 1);
+            post.loves = Math.max((post.loves || 1) - 1, 0);
+          }
+        }
+        return post;
+      });
+    
+      setPosts(updatedPosts);
+    };
+    
+
+  return (
+    <div className="forums-container">
+      <img className="homepage-image" src={image} alt="Login Image" />
+
+      <img className="title-image-forums" src={titleImage} alt="Title Image" />
+      {/* Drop-down topic filter */}
+      <label htmlFor="topicFilter">Select a Topic:</label>
+      <select id="topicFilter" value={topicFilter} onChange={handleTopicFilterChange}>
+        <option value="All">All Topics</option>
+        {topics.map((topic) => (
+          <option key={topic.id} value={topic.subject}>
+            {topic.subject}
+          </option>
+        ))}
+      </select>
       {currentUser ? (
         <>
           {/* New Post Button */}
@@ -214,6 +249,14 @@ export const Forums = () => {
               <ul className="existing-posts">
                 {filteredPosts.map((post) => (
                   <div key={post.id} className="post-item">
+                    <p className="post-creation-date">
+            {new Date(post.createdAt).toLocaleDateString()}
+          </p>
+                        <LoveButton
+  post={post} // Make sure 'post' is defined and passed as a prop
+  currentUser={currentUser} // Make sure 'currentUser' is defined and passed as a prop
+  handleLovePost={handleLovePost}
+/>
                     {currentUser.id === post.userId && (
                       <div className="post-actions">
                         <button onClick={() => handleEditPost(post.id)}>
@@ -229,6 +272,9 @@ export const Forums = () => {
                     <p className="post-author">Author: {post.author}</p>
                     <p className="post-content">{post.content}</p>
 
+                    
+
+
                     {/* New Comment Form */}
                     <CommentForm
                       postId={post.id}
@@ -243,26 +289,28 @@ export const Forums = () => {
 
                     {/* Comments List */}
                     <ul className="comments-list">
-                      {comments
-                        .filter((comment) => comment.postId === post.id)
-                        .map((comment) => (
-                          <div key={comment.id} className="comment-container">
-                            <p>{comment.content}</p>
-                            <p className="comment-author">
-                              Author: {comment.author}
-                            </p>
-                            {currentUser.id === comment.userId && (
-                              <button
-                                onClick={() =>
-                                  handleDeleteComment(comment.id)
-                                }
-                                className="delete-comment"
-                              >
-                                Delete Comment
-                              </button>
-                            )}
-                          </div>
-                        ))}
+                    {comments
+  .filter((comment) => comment.postId === post.id)
+  .map((comment) => (
+    <div key={comment.id} className="comment-container">
+      <p>{comment.content}</p>
+      <p className="comment-author">
+        Author: {comment.author}
+      </p>
+      <p className="comment-date">
+        Created on: {new Date(comment.createdAt).toLocaleString()}
+      </p>
+      {currentUser.id === comment.userId && (
+        <button
+          onClick={() => handleDeleteComment(comment.id)}
+          className="delete-comment"
+        >
+          Delete Comment
+        </button>
+      )}
+    </div>
+  ))}
+
                     </ul>
 
                     {/* Edit Post Form */}

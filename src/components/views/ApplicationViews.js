@@ -2,13 +2,13 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import image from '/Users/meganlee/workspace/blossoming-paths/src/images/Yellow Watercolor Wild Flowers Notes A4 Document.png';
-import { Profile } from '../profile/Profile';
 import "./ApplicationViews.css"
 import { Forums } from "../forums/Forums";
 import { NewPostForm } from '../forums/NewPostForm.js';
 import { EditForum } from '../forums/EditForum.js';
 import { CommentForm } from '../forums/CommentForm.js';
 import titleImage from '/Users/meganlee/workspace/blossoming-paths/src/images/Beige Brown Minimal Lettering Logo Concept.png';
+import { LoveButton } from '../forums/LoveButton.js';
 
 // import secondImage from '/Users/meganlee/workspace/blossoming-paths/src/images/Untitled design (2) copy.png'
 
@@ -44,6 +44,7 @@ export const ApplicationViews = () => {
       <Route path="/forums" element={<NewPostForm />} />
       <Route path="/forums" element={<EditForum />} />
       <Route path="/forums" element={<CommentForm />} />
+      <Route path="/forums" element={<LoveButton />} />
     </Routes>
   );
 };

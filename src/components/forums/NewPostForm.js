@@ -9,6 +9,7 @@ export const NewPostForm = ({ handlePostCreation, handleCancel, topics, currentU
     const formData = {
       topic: selectedTopic,
       content,
+      createdAt: new Date().toISOString()
     };
     handlePostCreation(formData);
   };

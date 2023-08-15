@@ -297,7 +297,7 @@ h2 {
   color: white; /* Set the text color */
   padding: 10px 10px; /* Adjust the padding as needed */
   margin: 10px 0; /* Adjust the margin as needed */
-  margin-left: 68em;
+  margin-left: 70em;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -373,4 +373,43 @@ select {
   border-radius: 4px;
   background-color: #fff;
   color: #333;
+}
+.love-button {
+  font-size: 18px;
+  margin-right: 5px;
+  cursor: pointer;
+  color: gray; /* Blank heart outline */
+  border: none; /* Remove any border */
+  background: none; /* Remove background */
+  padding: 0; /* Remove padding */
+  outline: none; /* Remove outline */
+}
+
+/* Style for the love button */
+.love-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  font-size: 1rem;
+  color: #333;
+}
+
+.love-button.loved {
+  color: red; /* Change the color when loved */
+}
+
+/* Style for the heart icon */
+.heart-icon {
+  margin-right: 0.25rem;
+}
+
+/* Style for the love count */
+.love-count {
+  margin-left: 0.25rem;
+}
+
+.comment-date {
+  margin-left: 0em;
 }

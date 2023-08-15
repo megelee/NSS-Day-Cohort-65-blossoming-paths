@@ -13,6 +13,8 @@ export const CommentForm = ({ postId, currentUser, getAuthorName, setComments })
       content: content,
       userId: currentUser.id,
       author: authorName,
+      createdAt: new Date().toISOString()
+
     };
 
     // Save the new comment to your API
@@ -32,6 +34,7 @@ export const CommentForm = ({ postId, currentUser, getAuthorName, setComments })
       })
       .catch((error) => console.error("Error creating comment:", error));
   };
+
 
   
 
